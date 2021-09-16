@@ -65,7 +65,7 @@ const createLetter = (data, dataCallback, endCallback) => {
     generateAddress(data.body, doc)
     generateBody(data.body, doc)
     generateSignatureBlock(data.signature, doc)
-    generateFooter(doc)
+    generateFooter(data.footer, doc)
 
     doc.end()
 }
@@ -85,8 +85,7 @@ const generateHeader = (header, doc) => {
         .moveDown()
 }
 
-const generateFooter = (doc) => {
-    const footer = "Videmus Mundum"
+const generateFooter = (footer, doc) => {
     const center = doc.page.width/2 - doc.widthOfString(footer)/2
     doc
         .fontSize(9)
