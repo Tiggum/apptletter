@@ -1,7 +1,4 @@
-import fs from 'fs';
-import PDFDocment from 'pdfkit-table'
-//const PDFDocument = require('pdfkit-table')
-
+import PDFDocument from 'pdfkit-table'
 
 const data = {
     header: {
@@ -56,11 +53,13 @@ const data = {
 
 let fontSize = 12
 
-const createLetter = (data, res) => {
+const createLetter = (data, dataCallback, endCallback) => {
     let doc = new PDFDocument({size: 'Letter', margins: {top: .63*72, bottom: 72, left: 72, right: 72}})
     doc.registerFont('Body', 'fonts/Trebuchet MS/TREBUC.TTF')
     doc.registerFont('Header', 'fonts/Copperplate Gothic/COPRGTB.TTF')
 
+    doc.on('data', dataCallback)
+    doc.on('end', endCallback)
     fontSize = 10
     generateHeader(data.header, doc)
     generateAddress(data.body, doc)
@@ -69,7 +68,6 @@ const createLetter = (data, res) => {
     generateFooter(doc)
 
     doc.end()
-    doc.pipe(res)
 }
 
 const generateHeader = (header, doc) => {
