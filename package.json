@@ -1,0 +1,20 @@
+{
+  "name": "pdf",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "pdfkit": "^0.12.3",
+    "pdfkit-table": "^0.1.46",
+    "pdfmake": "^0.2.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  }
+}
