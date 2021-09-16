@@ -18,12 +18,24 @@ data = {
             {
                 name: 'caden',
                 role: 'primary',
-                email: 'caden@mail.com'
+                email: 'caden@mail.com',
+                address: 'somewhere not hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+                more: 'more',
+                moreeeeeeeeeeeeeeeeeeeeeeeeeeeeee: 'I NEED IT ',
+                howFar: 'can this go',
+                weStray: 'From gods light',
+                'Security Clearance': 'long names am i right',
+                'can we add some more': 'you betcha'
             },
             {
                 name: 'yordt',
                 role: 'alternate',
                 email: 'yordt@email.com'
+            },
+            { 
+                name: 'beck',
+                role: 'overlord',
+                email: 'beck@mail.com'
             }
         ],
         paragraphs: [
@@ -41,10 +53,14 @@ data = {
     }
 }
 
+let fontSize = 12
 
 const createLetter = (path) => {
     let doc = new PDFDocument({size: 'Letter', margins: {top: .63*72, bottom: 72, left: 72, right: 72}})
+    doc.registerFont('Body', 'fonts/Trebuchet MS/TREBUC.TTF')
+    doc.registerFont('Header', 'fonts/Copperplate Gothic/COPRGTB.TTF')
 
+    fontSize = 10
     generateHeader(data.header, doc)
     generateAddress(data.body, doc)
     generateBody(data.body, doc)
@@ -57,16 +73,16 @@ const createLetter = (path) => {
 
 const generateHeader = (header, doc) => {
     doc
-        .moveDown()
         .fillColor("#000099")
         .fontSize(12)
-        .font('./fonts/Copperplate Gothic/Copperplate Gothic Bold Regular.ttf')
+        .font('fonts/Copperplate Gothic/COPRGTB.TTF')
+        .text('', 72, 45, {continued: true})
         .text(header.header1, {align: "center"})
         .fontSize(10.5)
         .text(header.subheader1, {align: "center"})
         .text(header.subheader2, {align: "center"})
-        .image("USSF Logo.png", 6.68 * 72, (.82 * 72) - (.18 * 72), {fit: [.74*72, .97*72], align: 'center', valign: 'center'})
-        .image("DoD Seal.png", .62 * 72, (.82 * 72) - (.17 * 72), {fit: [72, 72], align: 'center', valign: 'center'})
+        .image("USSF Logo.png", doc.page.width - 72 - .77*72/2, 36, {height: 72})
+        .image("DoD Seal.png", 36, 36, {fit: [72, 72], })
         .moveDown()
 }
 
@@ -76,7 +92,7 @@ const generateFooter = (doc) => {
     doc
         .fontSize(9)
         .fillColor("#000099")
-        .font('./fonts/Copperplate Gothic/Copperplate Gothic Bold Regular.ttf')
+        .font('fonts/Copperplate Gothic/COPRGTB.TTF')
         .text(footer, center, doc.page.height - 63, {lineBreak: false} )
 }
 
@@ -125,18 +141,33 @@ const generateBody = (body, doc) => {
     doc.moveDown()
     const indent = doc.widthOfString('2.  ')
     for (let i = 0; i < body.paragraphs.length; i++){
-        if (i = 0){
-
-        }
-        
         doc
             .text(`${i+1}.`, {continued: true})
             .text('')
             .text(body.paragraphs[i], 72+indent)
             .text('', 72)
             .moveDown()
-    }
+
+        if ( i === 0){
+            const rows = []
+            
+            for (let j = 0; j < body.appointees.length; j++){
+                rows.push(Object.values(body.appointees[j]))
+            }
+            
+            const tableJson = {
+                headers: Object.keys(body.appointees[0]),
+                rows: rows,
+            }
         
+            doc.table(tableJson, {
+                prepareHeader: () => doc.font('Body').fontSize(fontSize),
+                prepareRow: (row, indexColumn, indexRow, rectRow) => {
+                    doc.font('Body').fontSize(fontSize)
+                }
+            })
+        }
+    }   
 }
 
 
