@@ -7,7 +7,7 @@ const data = {
         subheader2: "SPACE DELTA 4"
     }, 
     body: {
-        fontSize: 12,
+        fontSize: 10,
         date: '22Sep2021',
         to: '86 AW/SC',
         from: 'Sgt Caden Reynolds',
@@ -44,8 +44,8 @@ const data = {
     },
     footer: "Videmus Mundum",
     signature: {
-        name: "CADEN J. REYNOLDS",
-        branch: "USSF",
+        name: "caden J. REYNOLDS",
+        branch: "UssF",
         rank: "Sgt",
         position: "Supra Coder"
     }
@@ -60,7 +60,7 @@ const createLetter = (data, dataCallback, endCallback) => {
 
     doc.on('data', dataCallback)
     doc.on('end', endCallback)
-    fontSize = 10
+    fontSize = data.body.fontSize
     generateHeader(data.header, doc)
     generateAddress(data.body, doc)
     generateBody(data.body, doc)
@@ -76,10 +76,10 @@ const generateHeader = (header, doc) => {
         .fontSize(12)
         .font('fonts/Copperplate Gothic/COPRGTB.TTF')
         .text('', 72, 45, {continued: true})
-        .text(header.header1, {align: "center"})
+        .text(header.header1.toUpperCase(), {align: "center"})
         .fontSize(10.5)
-        .text(header.subheader1, {align: "center"})
-        .text(header.subheader2, {align: "center"})
+        .text(header.subheader1.toUpperCase(), {align: "center"})
+        .text(header.subheader2.toUpperCase(), {align: "center"})
         .image("USSF Logo.png", doc.page.width - 72 - .77*72/2, 36, {height: 72})
         .image("DoD Seal.png", 36, 36, {fit: [72, 72], })
         .moveDown()
@@ -95,7 +95,7 @@ const generateFooter = (footer, doc) => {
 }
 
 const generateSignatureBlock = (signer, doc) => {
-    const topLine = `${signer.name}, ${signer.rank}, ${signer.branch}`
+    const topLine = `${signer.name.toUpperCase()}, ${signer.rank}, ${signer.branch.toUpperCase()}`
     const spaceWidth = (7.5 * 72) - (4.5*72)
     const textWidth = doc.widthOfString(topLine)
     
@@ -104,7 +104,6 @@ const generateSignatureBlock = (signer, doc) => {
         .moveDown(3)
         .font('./fonts/Trebuchet MS/TREBUC.TTF')
         .fillColor('black')
-        .fontSize(12)
         .text( topLine, {indent: doc.page.width - 72*2 - textWidth} )
         .text(signer.position, {indent: doc.page.width - 72*2 - textWidth})
     } else {
@@ -112,7 +111,6 @@ const generateSignatureBlock = (signer, doc) => {
         .moveDown(3)
         .font('./fonts/Trebuchet MS/TREBUC.TTF')
         .fillColor('black')
-        .fontSize(12)
         .text(
             topLine,
             {indent: 3.5*72} 
@@ -125,7 +123,7 @@ const generateAddress = (body, doc) => {
     doc
         .font('./fonts/Trebuchet MS/TREBUC.TTF')
         .fillColor('black')
-        .fontSize(12)
+        .fontSize(body.fontSize)
         .text('', 72, 72*2, {align: 'right'})
         .moveDown()
         .text(`MEMORANDUM FOR  ${body.to.toUpperCase()}`)
@@ -139,6 +137,7 @@ const generateBody = (body, doc) => {
     doc.moveDown()
     const indent = doc.widthOfString('2.  ')
     for (let i = 0; i < body.paragraphs.length; i++){
+        console.log(body.paragraphs[i])
         doc
             .text(`${i+1}.`, {continued: true})
             .text('')
@@ -146,7 +145,7 @@ const generateBody = (body, doc) => {
             .text('', 72)
             .moveDown()
 
-        if ( i === 0){
+        if ( i === 0 && body.appointees.length !== 0){
             const rows = []
             
             for (let j = 0; j < body.appointees.length; j++){
