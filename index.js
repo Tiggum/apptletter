@@ -1,11 +1,10 @@
-import express, { response } from 'express'
-import createLetter from './createLetter.js'
-import bodyParser from 'body-parser'
-import dotenv from 'dotenv'
-import path from 'path'
+const express = require('express')
+const createLetter = require('./createLetter.js')
+require('dotenv').config()
+const bodyParser = require('body-parser')
+const path = require("path");
 
-dotenv.config()
-const __dirname = path.resolve()
+//const __dirname = path.resolve()
 
 const port = process.env.PORT || 9001
 

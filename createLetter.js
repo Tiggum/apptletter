@@ -1,4 +1,4 @@
-import PDFDocument from 'pdfkit-table'
+const PDFDocument = require('pdfkit-table')
 
 const data = {
     header: {
@@ -168,4 +168,4 @@ const generateBody = (body, doc) => {
 }
 
 
-export default createLetter
+module.exports = createLetter
