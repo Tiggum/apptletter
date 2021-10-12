@@ -20,10 +20,10 @@
     "express": "^4.17.1",
     "pdfkit": "^0.12.3",
     "pdfkit-table": "^0.1.48",
-    "pdfmake": "^0.2.2"
+    "pdfmake": "^0.2.2",
+    "nodemon": "^2.0.13"
   },
   "devDependencies": {
-    "nodemon": "^2.0.13"
   },
   "type": "module"
 }
