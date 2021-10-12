@@ -1,5 +1,5 @@
 import express, { response } from 'express'
-import createLetter from '../createLetter.js'
+import createLetter from './createLetter.js'
 import bodyParser from 'body-parser'
 import dotenv from 'dotenv'
 import path from 'path'
