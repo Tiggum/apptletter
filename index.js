@@ -13,7 +13,7 @@ const port = process.env.PORT || 9001
 const app = express()
 
 app.use(cors({
-    origin: ['https://apptletter-gen.herokuapp.com/post_pdf']
+    origin: ['https://apptletter-frontend.herokuapp.com/']
 }))
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
