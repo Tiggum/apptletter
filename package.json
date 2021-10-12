@@ -4,17 +4,20 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix client\"",
+    "start": "concurrently --kill-others-on-fail \"npm run build && node ./build/index.js\" \"npm run start --prefix client\"",
     "heroku-postbuild": "cd client && npm install && npm run build",
-    "test": "nodemon index.js",
-    "server": "nodemon index.js",
+    "server": "nodemon ./build/index.js",
     "client": "cd client && npm start",
-    "develop": "concurrently --kill-others-on-fail \"npm run start\" \"npm run client\""
+    "develop": "concurrently --kill-others-on-fail \"npm run start\" \"npm run client\"",
+    "build-babel": "babel -d ./build ./src -s",
+    "clean": "rm -rf build && mkdir build",
+    "build": "npm run clean && npm run build-babel"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "babel-preset-env": "^1.7.0",
     "body-parser": "^1.19.0",
     "concurrently": "^6.3.0",
     "dotenv": "^10.0.0",
@@ -23,5 +26,9 @@
     "pdfkit": "^0.12.3",
     "pdfkit-table": "^0.1.48",
     "pdfmake": "^0.2.2"
+  },
+  "type": "module",
+  "devDependencies": {
+    "babel-cli": "^6.26.0"
   }
 }
