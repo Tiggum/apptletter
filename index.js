@@ -3,6 +3,7 @@ import createLetter from './createLetter.js'
 import bodyParser from 'body-parser'
 import dotenv from 'dotenv'
 import path from 'path'
+import cors from 'cors'
 
 dotenv.config()
 const __dirname = path.resolve()
@@ -10,6 +11,10 @@ const __dirname = path.resolve()
 const port = process.env.PORT || 9001
 
 const app = express()
+
+app.use(cors({
+    origin: ['https://apptletter-gen.herokuapp.com/post_pdf']
+}))
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -24,10 +29,10 @@ app.post('/post_pdf', async (req, res) => {
     createLetter(req.body, (chunk) => stream.write(chunk), () => stream.end())
 })
 
-app.use(express.static(path.resolve(__dirname, "./client/build")))
-app.get("*", (req, res) => {
-    response.sendFile(path.resolve(__dirname, "./client/build", "index.html"))
-})
+// app.use(express.static(path.resolve(__dirname, "./client/build")))
+// app.get("*", (req, res) => {
+//     response.sendFile(path.resolve(__dirname, "./client/build", "index.html"))
+// })
 
 const server = app.listen(port, () =>
     console.log(`Listening on port ${server.address().port}`)
