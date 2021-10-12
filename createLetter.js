@@ -53,7 +53,7 @@ const data = {
 
 let fontSize = 12
 
-const createLetter = (bob, dataCallback, endCallback) => {
+const createLetter = (data, dataCallback, endCallback) => {
     let doc = new PDFDocument({size: 'Letter', margins: {top: .63*72, bottom: 72, left: 72, right: 72}})
     doc.registerFont('Body', 'fonts/Trebuchet MS/TREBUC.TTF')
     doc.registerFont('Header', 'fonts/Copperplate Gothic/COPRGTB.TTF')

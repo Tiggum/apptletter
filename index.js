@@ -1,7 +1,11 @@
 import express, { response } from 'express'
 import createLetter from './createLetter.js'
 import bodyParser from 'body-parser'
-require("dotenv").config()
+import dotenv from 'dotenv'
+import path from 'path'
+
+dotenv.config()
+const __dirname = path.resolve()
 
 const port = process.env.PORT || 9001
 
@@ -20,7 +24,6 @@ app.post('/post_pdf', async (req, res) => {
     createLetter(req.body, (chunk) => stream.write(chunk), () => stream.end())
 })
 
-const path = require("path")
 app.use(express.static(path.resolve(__dirname, "./client/build")))
 app.get("*", (req, res) => {
     response.sendFile(path.resolve(__dirname, "./client/build", "index.html"))
