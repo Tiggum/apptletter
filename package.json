@@ -28,7 +28,6 @@
     "pdfkit-table": "^0.1.48",
     "pdfmake": "^0.2.2"
   },
-  "type": "module",
   "devDependencies": {
   }
 }
