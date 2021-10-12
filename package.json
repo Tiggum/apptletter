@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix client\"",
-    "install-client": "cd client && npm install",
-    "heroku-postbuild": "npm run install-client && npm run build",
+    "heroku-postbuild": "cd client && npm install && npm run build",
     "test": "nodemon index.js",
     "server": "nodemon index.js",
     "client": "cd client && npm start",
@@ -17,6 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "concurrently": "^6.3.0",
     "express": "^4.17.1",
     "pdfkit": "^0.12.3",
     "pdfkit-table": "^0.1.48",
