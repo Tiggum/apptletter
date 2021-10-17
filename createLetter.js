@@ -54,6 +54,8 @@ const data = {
 let fontSize = 12
 
 const createLetter = (data, dataCallback, endCallback) => {
+    console.log(data.body.appointees)
+    
     let doc = new PDFDocument({size: 'Letter', margins: {top: .63*72, bottom: 72, left: 72, right: 72}})
     doc.registerFont('Body', 'fonts/Trebuchet MS/TREBUC.TTF')
     doc.registerFont('Header', 'fonts/Copperplate Gothic/COPRGTB.TTF')
@@ -145,16 +147,11 @@ const generateBody = (body, doc) => {
             .text('', 72)
             .moveDown()
 
-        if ( i === 0 && body.appointees.length !== 0){
-            const rows = []
-            
-            for (let j = 0; j < body.appointees.length; j++){
-                rows.push(Object.values(body.appointees[j]))
-            }
+        if ( i === 0 && body.appointees.table ){
             
             const tableJson = {
-                headers: Object.keys(body.appointees[0]),
-                rows: rows,
+                headers: body.appointees.columnHeader,
+                rows: body.appointees.rows
             }
         
             doc.table(tableJson, {
