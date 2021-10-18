@@ -83,8 +83,12 @@ const generateHeader = (header, doc) => {
         .text(header.subheader1.toUpperCase(), {align: "center"})
         .text(header.subheader2.toUpperCase(), {align: "center"})
         .image("USSF Logo.png", doc.page.width - 72 - .77*72/2, 36, {height: 72})
-        .image("DoD Seal.png", 36, 36, {fit: [72, 72], })
-        .moveDown()
+        
+        if ( header.enableSFLogo) {
+            doc.image("DoD Seal.png", 36, 36, {fit: [72, 72], })
+        }
+
+        doc.moveDown()
 }
 
 const generateFooter = (footer, doc) => {
