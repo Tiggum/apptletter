@@ -82,12 +82,11 @@ const generateHeader = (header, doc) => {
         .fontSize(10.5)
         .text(header.subheader1.toUpperCase(), {align: "center"})
         .text(header.subheader2.toUpperCase(), {align: "center"})
-        .image("USSF Logo.png", doc.page.width - 72 - .77*72/2, 36, {height: 72})
-        
-        if ( header.enableSFLogo) {
-            doc.image("DoD Seal.png", 36, 36, {fit: [72, 72], })
+        .image("DoD Seal.png", 36, 36, {fit: [72, 72], })
+        if ( header.enableSFLogo ) {
+            doc.image("USSF Logo.png", doc.page.width - 72 - .77*72/2, 36, {height: 72})
         }
-
+        console.log(header)
         doc.moveDown()
 }
 
