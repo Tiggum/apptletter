@@ -21,16 +21,41 @@ app.post('/post_pdf', async (req, res) => {
     const stream = res.writeHead(200, {
         'Content-Type': 'application/pdf',
         'Access-Control-Allow-Origin': '*',
-        // 'Content-Disposition': 'attachment; filename=appointmentletter.pdf',
     })
 
     createLetter(req.body, (chunk) => stream.write(chunk), () => stream.end())
 })
 
-// app.use(express.static(path.resolve(__dirname, "./client/build")))
-// app.get("*", (req, res) => {
-//     response.sendFile(path.resolve(__dirname, "./client/build", "index.html"))
-// })
+app.get('/template', async (req, res) => {
+    res.json({
+        header: {
+        header1: "Department of the Air Force",
+        subheader1: "United States Space Force",
+        subheader2: "Space Delta 4",
+        enableSFLogo: true
+      },
+      body: {
+        fontSize: 12,
+        date: "",
+        to: "460 SW/CC",
+        from: "CDT",
+        subject: "Example PDF",
+        appointees: {
+          columnHeader: ['1', '2', '3'],
+          rows: [['1', '2', '3']],
+          table: false
+        },
+        paragraphs: ['This', 'is', 'a', 'test']
+      },
+      signature: {
+        name: "caden j reynolds",
+        branch: "USSF",
+        rank: "sgt",
+        position: "Coder"
+      },
+      footer: "latin"
+    })
+})
 
 const server = app.listen(port, () =>
     console.log(`Listening on port ${server.address().port}`)
