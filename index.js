@@ -56,14 +56,8 @@ app.get('/template/header/:id', async (req, res) => {
 })
 
 
-// app.post('/template', async (req, res) => {
+// app.post('/template/body', async (req, res) => {
 //     const newTemplate = new Template({
-//         header: {
-//         header1: "Department of the Air Force",
-//         subheader1: "United States Space Force",
-//         subheader2: "Space Delta 4",
-//         enableSFLogo: true
-//       },
 //       body: {
 //         fontSize: 12,
 //         date: "",
@@ -89,6 +83,23 @@ app.get('/template/header/:id', async (req, res) => {
 
 //     await newTemplate.save()
 //     res.send(newTemplate)
+// })
+
+// app.post('/template/header', async (req, res) => {
+//     const newHeader = new Header({
+//         name: "Delta 6 Letterhead",
+//         header: {
+//         header1: "Department of the Air Force",
+//         subheader1: "United States Space Force",
+//         subheader2: "Space Delta 6",
+//         enableSFLogo: true
+//       },
+//       footer: "Cyber Yeti"
+//     })
+
+
+//     await newHeader.save()
+//     res.send(newHeader)
 // })
 
 const server = app.listen(port, () =>

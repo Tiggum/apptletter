@@ -109,7 +109,7 @@ const generateBody = (body, doc) => {
             }
         
             doc.table(tableJson, {
-                prepareHeader: () => doc.font('Body').fontSize(fontSize),
+                prepareHeader: () => doc.font(body.font).fontSize(fontSize),
                 prepareRow: (row, indexColumn, indexRow, rectRow) => {
                     doc.font(body.font).fontSize(fontSize)
                 }
