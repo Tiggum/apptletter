@@ -6,6 +6,7 @@ import path from 'path'
 import cors from 'cors'
 import mongoose from 'mongoose'
 import Template from './schemas/template.schema.js'
+import Header from './schemas/header.schema.js'
 
 dotenv.config()
 const __dirname = path.resolve()
@@ -32,16 +33,28 @@ app.post('/post_pdf', async (req, res) => {
     createLetter(req.body, (chunk) => stream.write(chunk), () => stream.end())
 })
 
-app.get('/template', async (req, res) => {
+app.get('/template/body', async (req, res) => {
     const templates = await Template.find({}, {'name': 1, '_id': 1})
     res.json(templates)
 })
 
-app.get('/template/:id', async (req, res) => {
+app.get('/template/body/:id', async (req, res) => {
     const id = req.params.id
     const template = await Template.findById(id, {'_id': 0, "__v": 0})
     res.json(template)
 })
+
+app.get('/template/header', async (req, res) => {
+    const headers = await Header.find({}, {'name': 1, '_id': 1})
+    res.json(headers)
+})
+
+app.get('/template/header/:id', async (req, res) => {
+    const id = req.params.id
+    const header = await Header.findById(id, {'_id': 0, "__v": 0})
+    res.json(header)
+})
+
 
 // app.post('/template', async (req, res) => {
 //     const newTemplate = new Template({

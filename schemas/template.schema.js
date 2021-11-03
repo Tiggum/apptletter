@@ -5,7 +5,7 @@ const TemplateSchema = new mongoose.Schema(
         name: { type: String },
         body: {
             fontSize: { type: Number },
-            font: { type: String},
+            font: { type: String },
             date: { type: Date },
             to: { type: String },
             from: { type: String },

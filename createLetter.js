@@ -1,64 +1,15 @@
 import PDFDocument from 'pdfkit-table'
 
-const data = {
-    header: {
-        header1: "DEPARTMENT OF THE AIR FORCE",
-        subheader1: "UNITED STATES SPACE FORCE",
-        subheader2: "SPACE DELTA 4"
-    }, 
-    body: {
-        fontSize: 10,
-        date: '22Sep2021',
-        to: '86 AW/SC',
-        from: 'Sgt Caden Reynolds',
-        subject: 'Unit Security Managers',
-        appointees: [
-            {
-                name: 'caden',
-                role: 'primary',
-                email: 'caden@mail.com',
-                address: 'somewhere not hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
-                more: 'more',
-                moreeeeeeeeeeeeeeeeeeeeeeeeeeeeee: 'I NEED IT ',
-                howFar: 'can this go',
-                weStray: 'From gods light',
-                'Security Clearance': 'long names am i right',
-                'can we add some more': 'you betcha'
-            },
-            {
-                name: 'yordt',
-                role: 'alternate',
-                email: 'yordt@email.com'
-            },
-            { 
-                name: 'beck',
-                role: 'overlord',
-                email: 'beck@mail.com'
-            }
-        ],
-        paragraphs: [
-            'In accordance with aaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-            'contains fouo',
-            'please contact for more info'
-        ]
-    },
-    footer: "Videmus Mundum",
-    signature: {
-        name: "caden J. REYNOLDS",
-        branch: "UssF",
-        rank: "Sgt",
-        position: "Supra Coder"
-    }
-}
-
 let fontSize = 12
 
 const createLetter = (data, dataCallback, endCallback) => {
     console.log(data.body.appointees)
     
     let doc = new PDFDocument({size: 'Letter', margins: {top: .63*72, bottom: 72, left: 72, right: 72}})
-    doc.registerFont('Body', 'fonts/Trebuchet MS/TREBUC.TTF')
+    doc.registerFont('Trebuchet', 'fonts/Trebuchet MS/TREBUC.TTF')
     doc.registerFont('Header', 'fonts/Copperplate Gothic/COPRGTB.TTF')
+    data.body.font = data.body.font || 'Times-Roman'
+
 
     doc.on('data', dataCallback)
     doc.on('end', endCallback)
@@ -66,7 +17,7 @@ const createLetter = (data, dataCallback, endCallback) => {
     generateHeader(data.header, doc)
     generateAddress(data.body, doc)
     generateBody(data.body, doc)
-    generateSignatureBlock(data.signature, doc)
+    generateSignatureBlock(data.signature, doc, data.body)
     generateFooter(data.footer, doc)
 
     doc.end()
@@ -76,7 +27,7 @@ const generateHeader = (header, doc) => {
     doc
         .fillColor("#000099")
         .fontSize(12)
-        .font('fonts/Copperplate Gothic/COPRGTB.TTF')
+        .font('Header')
         .text('', 72, 45, {continued: true})
         .text(header.header1.toUpperCase(), {align: "center"})
         .fontSize(10.5)
@@ -95,11 +46,11 @@ const generateFooter = (footer, doc) => {
     doc
         .fontSize(9)
         .fillColor("#000099")
-        .font('fonts/Copperplate Gothic/COPRGTB.TTF')
+        .font('Header')
         .text(footer, center, doc.page.height - 63, {lineBreak: false} )
 }
 
-const generateSignatureBlock = (signer, doc) => {
+const generateSignatureBlock = (signer, doc, body) => {
     const topLine = `${signer.name.toUpperCase()}, ${signer.rank}, ${signer.branch.toUpperCase()}`
     const spaceWidth = (7.5 * 72) - (4.5*72)
     const textWidth = doc.widthOfString(topLine)
@@ -107,14 +58,14 @@ const generateSignatureBlock = (signer, doc) => {
     if (textWidth > spaceWidth){
         doc
         .moveDown(3)
-        .font('./fonts/Trebuchet MS/TREBUC.TTF')
+        .font()
         .fillColor('black')
         .text( topLine, {indent: doc.page.width - 72*2 - textWidth} )
         .text(signer.position, {indent: doc.page.width - 72*2 - textWidth})
     } else {
         doc
         .moveDown(3)
-        .font('./fonts/Trebuchet MS/TREBUC.TTF')
+        .font(body.font)
         .fillColor('black')
         .text(
             topLine,
@@ -126,7 +77,7 @@ const generateSignatureBlock = (signer, doc) => {
 
 const generateAddress = (body, doc) => {
     doc
-        .font('./fonts/Trebuchet MS/TREBUC.TTF')
+        .font(body.font)
         .fillColor('black')
         .fontSize(body.fontSize)
         .text('', 72, 72*2, {align: 'right'})
@@ -135,7 +86,7 @@ const generateAddress = (body, doc) => {
         .moveDown()
         .text(`FROM:  ${body.from.toUpperCase()}`)
         .moveDown()
-        .text(`SUBJECT:  ${body.subject.toUpperCase()}`)
+        .text(`SUBJECT:  ${body.subject}`)
 }
 
 const generateBody = (body, doc) => {
@@ -160,7 +111,7 @@ const generateBody = (body, doc) => {
             doc.table(tableJson, {
                 prepareHeader: () => doc.font('Body').fontSize(fontSize),
                 prepareRow: (row, indexColumn, indexRow, rectRow) => {
-                    doc.font('Body').fontSize(fontSize)
+                    doc.font(body.font).fontSize(fontSize)
                 }
             })
         }
