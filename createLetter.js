@@ -3,21 +3,20 @@ import PDFDocument from 'pdfkit-table'
 let fontSize = 12
 
 const createLetter = (data, dataCallback, endCallback) => {
-    console.log(data.body.appointees)
     
     let doc = new PDFDocument({size: 'Letter', margins: {top: .63*72, bottom: 72, left: 72, right: 72}})
     doc.registerFont('Trebuchet', 'fonts/Trebuchet MS/TREBUC.TTF')
     doc.registerFont('Header', 'fonts/Copperplate Gothic/COPRGTB.TTF')
     data.font = data.font || 'Times-Roman'
 
-
+    console.log(data.font)
     doc.on('data', dataCallback)
     doc.on('end', endCallback)
     fontSize = data.body.fontSize
     generateHeader(data.header, doc)
     generateAddress(data.body, doc, data.font)
     generateBody(data.body, doc, data.font)
-    generateSignatureBlock(data.signature, doc, data.body)
+    generateSignatureBlock(data.signature, doc, data.font)
     generateFooter(data.footer, doc)
 
     doc.end()
@@ -37,7 +36,6 @@ const generateHeader = (header, doc) => {
         if ( header.enableSFLogo ) {
             doc.image("USSF Logo.png", doc.page.width - 72 - .77*72/2, 36, {height: 72})
         }
-        console.log(header)
         doc.moveDown()
 }
 
@@ -58,7 +56,7 @@ const generateSignatureBlock = (signer, doc, font) => {
     if (textWidth > spaceWidth){
         doc
         .moveDown(3)
-        .font()
+        .font(font)
         .fillColor('black')
         .text( topLine, {indent: doc.page.width - 72*2 - textWidth} )
         .text(signer.position, {indent: doc.page.width - 72*2 - textWidth})
@@ -93,7 +91,6 @@ const generateBody = (body, doc, font) => {
     doc.moveDown()
     const indent = doc.widthOfString('2.  ')
     for (let i = 0; i < body.paragraphs.length; i++){
-        console.log(body.paragraphs[i])
         doc
             .text(`${i+1}.`, {continued: true})
             .text('')
